@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- Text Section -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvSubjectName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subject Name"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#D32F2F"
+                android:fontFamily="@font/poppins_semibold" />
+
+            <TextView
+                android:id="@+id/tvSubjectCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Code: CS101"
+                android:textSize="14sp"
+                android:textColor="#555555"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/tvBranchSemester"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IT - Sem 5"
+                android:textSize="14sp"
+                android:textColor="#777777"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <!-- CheckBox -->
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#D32F2F"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

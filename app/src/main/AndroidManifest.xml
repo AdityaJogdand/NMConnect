@@ -12,6 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MADProject">
         <activity
+            android:name=".FacultyProfile"
+            android:exported="false" />
+        <activity
+            android:name=".FacultyAnnouncementSubjectAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".FacultyAddAnnouncementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultySubject"
+            android:exported="false" />
+        <activity
+            android:name=".AddInternalMarksActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SubjectDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".SubjectDetails"
             android:exported="false" />
         <activity
