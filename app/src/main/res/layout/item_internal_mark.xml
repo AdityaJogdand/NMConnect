@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    android:background="#F5F5F5"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="#F5F5F5"
+        android:gravity="center_vertical">
+
+        <!-- Subject Name -->
+        <TextView
+            android:id="@+id/tvSubjectName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Data Handling and Visualization"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="#2C2C2C"
+            android:layout_marginEnd="16dp" />
+
+        <!-- Marks Display -->
+        <TextView
+            android:id="@+id/tvMarks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="46/50"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="#000000"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Arrow Icon -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_more"
+            android:rotation="270"
+            android:tint="#757575" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#FFFFFFFF">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Decorative Header Wave -->
+        <ImageView
+            android:id="@+id/topWave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/red_wave"
+            android:adjustViewBounds="true"
+            android:layout_alignParentTop="true"/>
+
+        <!-- Main Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/topWave"
+            android:padding="28dp">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/signupheader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Account"
+                android:textSize="34sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                />
+
+            <!-- Subtitle -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Join our campus community"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#6F6F6F"
+                android:layout_marginBottom="28dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-15dp"/>
+
+            <!-- Name Input -->
+            <EditText
+                android:id="@+id/nameInput"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginTop="6dp"
+                android:hint="Full Name"
+                android:background="@drawable/input_bg"
+                android:paddingStart="18dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/black"
+                android:textColorHint="#A0A0A0"
+                android:textSize="15sp"/>
+
+            <!-- Email -->
+            <EditText
+                android:id="@+id/emailInput"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginTop="14dp"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/input_bg"
+                android:paddingStart="18dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/black"
+                android:textColorHint="#A0A0A0"
+                android:textSize="15sp"/>
+
+            <!-- Password -->
+            <EditText
+                android:id="@+id/passwordInput"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginTop="14dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:background="@drawable/input_bg"
+                android:paddingStart="18dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/black"
+                android:textColorHint="#A0A0A0"
+                android:textSize="15sp"/>
+
+            <!-- Button -->
+            <Button
+                android:id="@+id/signupBtn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="34dp"
+                android:backgroundTint="#2A2A2A"
+                android:text="Sign Up"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

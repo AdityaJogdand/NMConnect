@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Decorative Header -->
+        <ImageView
+            android:id="@+id/topWave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/red_wave"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true" />
+
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="28dp"
+            android:paddingBottom="40dp">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/signupheader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:textSize="32sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp" />
+
+            <!-- Subtitle -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select your role to continue"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#6F6F6F"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center_horizontal" />
+
+            <!-- Role Selection -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="30dp">
+
+                <!-- Student -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardStudent"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="16dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#4CAF50"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_student"
+                            android:layout_marginBottom="6dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Student"
+                            android:textSize="15sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- CR -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardCR"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="16dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#FF9800"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_cr"
+
+                            android:layout_marginBottom="6dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="CR"
+                            android:textSize="15sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Teacher -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTeacher"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="16dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#2196F3"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_teacher"
+                            android:layout_marginBottom="6dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Teacher"
+                            android:textSize="15sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Email -->
+            <EditText
+                android:id="@+id/emailInput"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:hint="SAP id"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/input_bg"
+                android:paddingStart="18dp"
+                android:textColor="@color/black"
+                android:textColorHint="#A0A0A0"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_regular"/>
+
+            <!-- Password -->
+            <EditText
+                android:id="@+id/passwordInput"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginTop="14dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:background="@drawable/input_bg"
+                android:paddingStart="18dp"
+                android:textColor="@color/black"
+                android:textColorHint="#A0A0A0"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_regular"/>
+
+            <!-- Login Button -->
+            <Button
+                android:id="@+id/signupBtn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="36dp"
+                android:backgroundTint="#2A2A2A"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:fontFamily="@font/poppins_bold"
+                android:elevation="0dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StudentHomePage"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Stack image and card using FrameLayout -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Background header image -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/headerimage"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NMIMS"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/poppins_light"
+                android:textColor="@color/white"
+                android:textSize="60sp"
+                android:layout_marginTop="20dp"
+                android:letterSpacing="0.6"/>
+
+            <!-- Relative layout over the image -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp">
+
+                <!-- Rounded rectangle -->
+                <View
+                    android:id="@+id/rounded_card"
+                    android:layout_width="350dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/rounded_textview_bg" />
+
+                <!-- Circle overlapping the card -->
+                <FrameLayout
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="25dp"
+                    android:id="@+id/fl1">
+
+                    <!-- Circle background -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/circle"
+                        android:id="@+id/profile"/>
+
+                    <!-- Centered initials -->
+                    <TextView
+                        android:id="@+id/initials"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:textSize="25sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/poppins_bold" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/studentName"
+                    android:layout_below="@id/fl1"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="25sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/black" />
+
+                <LinearLayout
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/studentName"
+                    android:orientation="horizontal"
+                    android:layout_centerHorizontal="true">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/sapid"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="15sp"
+                            android:textColor="#4F4E4E" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/sapid"
+                            android:text="SAP ID"
+                            android:textColor="#000000"
+                            android:layout_marginTop="-5dp"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/poppins_regular"
+                            android:id="@+id/sapidtext" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4F4E4E"
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/rollno"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/rollno"
+                            android:text="Roll No"
+                            android:textColor="#000000"
+                            android:layout_marginTop="-5dp"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/poppins_regular"
+                            android:id="@+id/rollnotext" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4F4E4E"
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/branch"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/branch"
+                            android:text="Branch"
+                            android:textColor="#000000"
+                            android:layout_marginTop="-5dp"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/poppins_regular"
+                            android:id="@+id/brachtext" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </FrameLayout>
+
+        <!-- Horizontal Calendar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="16dp">
+
+            <!-- Month and Year Header -->
+            <TextView
+                android:id="@+id/tvMonthYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="October 2025"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#000000"
+                android:layout_marginBottom="12dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/calendarRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:clipToPadding="false"
+                android:paddingHorizontal="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="8dp"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Announcements"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- Horizontal RecyclerView for swipeable announcements -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/announcementsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                     />
+
+                <!-- Empty State -->
+                <TextView
+                    android:id="@+id/tvNoAnnouncements"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:padding="32dp"
+                    android:text="No announcements yet"
+                    android:textColor="#757575"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Announcements Section -->
+
+        <!-- Internal Marks Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Internal Marks"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#000000"
+                android:layout_marginBottom="8dp"
+                android:paddingHorizontal="16dp" />
+
+            <!-- RecyclerView for Internal Marks -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/internalMarksRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:clipToPadding="false" />
+
+            <!-- Empty State -->
+            <TextView
+                android:id="@+id/tvNoMarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No marks available yet"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#757575"
+                android:gravity="center"
+                android:padding="32dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

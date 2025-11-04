@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#FFFFFFFF">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-200dp"
+        android:src="@drawable/red_wave" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/nmims"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="140dp"
+        android:id="@+id/nmimsimg"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Campus. Simplified."
+        android:layout_below="@id/nmimsimg"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-105dp"
+        android:textSize="50dp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:id="@+id/mainheader"
+        android:fontFamily="@font/poppins_bold"
+         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="smart tools for student life"
+        android:layout_below="@id/mainheader"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"
+        android:textColor="#7D7D7D"
+        android:id="@+id/subheader"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginTop="-15sp"
+        />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Get Started"
+        android:backgroundTint="#2A2A2A"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:layout_below="@id/subheader"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:textStyle="bold"
+        android:padding="12dp"
+        android:id="@+id/getstartedbtn"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/getstartedbtn"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Already have an account?"
+            android:fontFamily="@font/poppins_light"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log in"
+            android:layout_marginLeft="3dp"
+            android:textStyle="bold"
+            android:textColor="#0026FF"
+            android:fontFamily="@font/poppins_bold"
+            android:id="@+id/login"/>
+    </LinearLayout>
+
+
+</RelativeLayout>
