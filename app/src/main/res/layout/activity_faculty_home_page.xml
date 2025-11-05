@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FacultyHomePage"
@@ -13,17 +13,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Stack image and card using FrameLayout -->
+        <!-- HEADER -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Background header image -->
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:src="@drawable/headerimage"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:contentDescription="Header background image" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,13 +36,11 @@
                 android:layout_marginTop="20dp"
                 android:letterSpacing="0.6"/>
 
-            <!-- Relative layout over the image -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp">
 
-                <!-- Rounded rectangle -->
                 <View
                     android:id="@+id/rounded_card"
                     android:layout_width="350dp"
@@ -51,22 +49,19 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/rounded_textview_bg" />
 
-                <!-- Circle overlapping the card -->
                 <FrameLayout
+                    android:id="@+id/fl1"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="25dp"
-                    android:id="@+id/fl1">
+                    android:layout_marginTop="25dp">
 
-                    <!-- Circle background -->
                     <View
+                        android:id="@+id/profile"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/circle"
-                        android:id="@+id/profile"/>
+                        android:background="@drawable/circle"/>
 
-                    <!-- Centered initials -->
                     <TextView
                         android:id="@+id/initials"
                         android:layout_width="match_parent"
@@ -78,27 +73,10 @@
                         android:fontFamily="@font/poppins_bold" />
                 </FrameLayout>
 
-                <!-- Faculty Badge -->
                 <TextView
-                    android:id="@+id/facultyBadge"
+                    android:id="@+id/studentName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@id/rounded_card"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/badge_background"
-                    android:fontFamily="@font/poppins_bold"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="4dp"
-                    android:text="Faculty"
-                    android:textColor="#FFFFFF"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/facultyName"
                     android:layout_below="@id/fl1"
                     android:layout_centerHorizontal="true"
                     android:textSize="25sp"
@@ -108,73 +86,67 @@
                 <LinearLayout
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/facultyName"
+                    android:layout_below="@id/studentName"
                     android:orientation="horizontal"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center">
+                    android:gravity="center_horizontal"
+                    android:layout_centerHorizontal="true">
 
+                    <!-- Faculty ID -->
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp">
-
+                        android:layout_marginRight="20dp">
                         <TextView
+                            android:id="@+id/sapid"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/facultyId"
                             android:fontFamily="@font/poppins_medium"
                             android:textSize="15sp"
                             android:textColor="#4F4E4E" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/facultyId"
+                            android:layout_below="@id/sapid"
                             android:text="Faculty ID"
                             android:textColor="#000000"
                             android:layout_marginTop="-5dp"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="@font/poppins_regular"
-                            android:id="@+id/facultyIdText" />
+                            android:fontFamily="@font/poppins_regular" />
                     </RelativeLayout>
 
+                    <!-- Department -->
                     <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp">
                         <TextView
+                            android:id="@+id/branch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#4F4E4E"
-                            android:layout_centerHorizontal="true"
-                            android:id="@+id/department"
                             android:fontFamily="@font/poppins_medium"
                             android:textSize="15sp" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/department"
+                            android:layout_below="@id/branch"
                             android:text="Department"
                             android:textColor="#000000"
                             android:layout_marginTop="-5dp"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="@font/poppins_regular"
-                            android:id="@+id/departmentText" />
+                            android:fontFamily="@font/poppins_regular" />
                     </RelativeLayout>
                 </LinearLayout>
             </RelativeLayout>
         </FrameLayout>
 
-        <!-- Horizontal Calendar -->
+        <!-- CALENDAR -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="16dp"
-            android:paddingHorizontal="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="24dp">
 
-            <!-- Month and Year Header -->
             <TextView
                 android:id="@+id/tvMonthYear"
                 android:layout_width="wrap_content"
@@ -195,107 +167,94 @@
                 android:paddingHorizontal="4dp" />
         </LinearLayout>
 
-        <!-- Add Announcement Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/addAnnouncementCard"
+        <!-- ANNOUNCEMENTS -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            app:cardBackgroundColor="#D73A31"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground">
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@android:drawable/ic_input_add"
-                    android:tint="#FFFFFF" />
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/announcementTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="12dp">
+                    android:text="Announcements"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/poppins_bold"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Create Announcement"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/poppins_bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Post to your subjects"
-                        android:textColor="#FFCCCC"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/poppins_regular" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_send"
-                    android:tint="#FFFFFF" />
+                <TextView
+                    android:id="@+id/tvViewAllAnnouncements"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View All"
+                    android:textColor="#FF0000"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="14sp"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"/>
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Announcements Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="8dp"
-            android:paddingBottom="16dp">
 
             <TextView
+                android:id="@+id/tvNoAnnouncements"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Announcements"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:paddingHorizontal="16dp" />
+                android:text="No announcements yet"
+                android:visibility="gone"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#666666"
+                android:layout_marginBottom="8dp"/>
 
-            <!-- Horizontal RecyclerView for swipeable announcements -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/announcementsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:paddingHorizontal="16dp" />
+                android:overScrollMode="never"/>
 
-            <!-- Empty State -->
-            <TextView
-                android:id="@+id/tvNoAnnouncements"
+            <!-- Add Announcement Button -->
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/fabAddAnnouncement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:gravity="center"
-                android:padding="32dp"
-                android:text="No announcements yet"
-                android:textColor="#757575"
-                android:textSize="14sp"
-                android:visibility="gone" />
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
+                android:text="Add Announcement"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/poppins_semibold"
+                app:icon="@android:drawable/ic_input_add"
+                app:iconTint="@android:color/white"
+                app:backgroundTint="#FF0000"
+                app:cornerRadius="12dp"
+                android:elevation="6dp"/>
+
+            <!-- Mark Attendance Button -->
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/fabMarkAttendance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="12dp"
+                android:text="Mark Attendance"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/poppins_semibold"
+                app:icon="@android:drawable/ic_menu_agenda"
+                app:iconTint="@android:color/white"
+                app:backgroundTint="#808080"
+                app:cornerRadius="12dp"
+                android:elevation="6dp"/>
+
         </LinearLayout>
 
     </LinearLayout>

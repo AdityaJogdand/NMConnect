@@ -1,6 +1,7 @@
 package com.example.madproject;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -9,14 +10,13 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -25,28 +25,30 @@ import com.google.firebase.firestore.Query;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 public class FacultyHomePage extends AppCompatActivity {
 
-    TextView facultyName, facultyId, department, initials, tvMonthYear, tvNoAnnouncements, facultyBadge;
+    TextView facultyName, facultyId, department, initials, tvMonthYear, tvNoAnnouncements, tvViewAllAnnouncements;
     View profile;
-    CardView addAnnouncementCard;
     RecyclerView calendarRecyclerView, announcementsRecyclerView;
+    ExtendedFloatingActionButton fabAddAnnouncement, fabMarkAttendance;
+
     CalendarAdapter calendarAdapter;
     AnnouncementAdapter announcementAdapter;
+    AnnouncementCacheManager cacheManager;
 
-    private FirebaseFirestore db;
-    private List<Announcement> announcementList;
-    private AnnouncementCacheManager cacheManager;
-    private List<ListenerRegistration> announcementListeners;
-    private Set<String> uniqueAnnouncementIds;
-    private String facultyIdValue;
+    SessionManager session;
+    SharedPreferences prefs;
+    FirebaseFirestore db;
+
+    List<Announcement> announcementList = new ArrayList<>();
+    ListenerRegistration deptListener, universityListener;
+
+    private final SharedPreferences.OnSharedPreferenceChangeListener prefListener =
+            (sharedPreferences, key) -> refreshUI();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,31 +56,64 @@ public class FacultyHomePage extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_faculty_home_page);
 
+        // Initialize
         db = FirebaseFirestore.getInstance();
-        announcementList = new ArrayList<>();
-        announcementListeners = new ArrayList<>();
-        uniqueAnnouncementIds = new HashSet<>();
+        session = new SessionManager(this);
+        prefs = getSharedPreferences("app_session", MODE_PRIVATE);
         cacheManager = new AnnouncementCacheManager(this);
 
-        initializeViews();
-        loadSessionData();
+        // Bind Views
+        facultyName = findViewById(R.id.studentName);
+        facultyId = findViewById(R.id.sapid);
+        department = findViewById(R.id.branch);
+        initials = findViewById(R.id.initials);
+        profile = findViewById(R.id.profile);
+        calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
+        tvMonthYear = findViewById(R.id.tvMonthYear);
+        announcementsRecyclerView = findViewById(R.id.announcementsRecyclerView);
+        tvNoAnnouncements = findViewById(R.id.tvNoAnnouncements);
+        tvViewAllAnnouncements = findViewById(R.id.tvViewAllAnnouncements);
+        fabAddAnnouncement = findViewById(R.id.fabAddAnnouncement);
+        fabMarkAttendance = findViewById(R.id.fabMarkAttendance);
+
+        if (prefs != null) prefs.registerOnSharedPreferenceChangeListener(prefListener);
+
         setupCalendar();
         setupAnnouncements();
+        refreshUI();
 
-        FacultySessionManager session = new FacultySessionManager(this);
-        facultyIdValue = session.getFacultyId();
+        // For faculty, department is stored under 'branch' key
+        String departmentName = session.getBranch();
+        String semester = session.getSemester();
 
-        loadFacultyAnnouncements();
+        loadAnnouncementsWithCache(departmentName, semester);
 
-        profile.setOnClickListener(v -> startActivity(new Intent(this, FacultyProfile.class)));
+        profile.setOnClickListener(v -> startActivity(new Intent(this, Profile.class)));
 
-        // Add announcement button
-        addAnnouncementCard.setOnClickListener(v -> {
+        // Faculty adds announcements
+        fabAddAnnouncement.setOnClickListener(v -> {
             Intent intent = new Intent(this, FacultyAddAnnouncementActivity.class);
-            intent.putExtra("facultyId", facultyIdValue);
+            intent.putExtra("department", departmentName);
+            intent.putExtra("semester", semester);
+            intent.putExtra("sapId", session.getSapId());
             startActivity(intent);
         });
 
+        // Mark Attendance
+        fabMarkAttendance.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MarkAttendanceActivity.class);
+            intent.putExtra("department", departmentName);
+            intent.putExtra("semester", semester);
+            startActivity(intent);
+        });
+
+        // View all announcements
+        tvViewAllAnnouncements.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FacultyViewAnnouncementsActivity.class);
+            startActivity(intent);
+        });
+
+        // Handle back press
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -87,67 +122,51 @@ public class FacultyHomePage extends AppCompatActivity {
         });
     }
 
-    private void initializeViews() {
-        facultyName = findViewById(R.id.facultyName);
-        facultyId = findViewById(R.id.facultyId);
-        department = findViewById(R.id.department);
-        initials = findViewById(R.id.initials);
-        facultyBadge = findViewById(R.id.facultyBadge);
-        profile = findViewById(R.id.profile);
-        addAnnouncementCard = findViewById(R.id.addAnnouncementCard);
-        calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
-        tvMonthYear = findViewById(R.id.tvMonthYear);
-        announcementsRecyclerView = findViewById(R.id.announcementsRecyclerView);
-        tvNoAnnouncements = findViewById(R.id.tvNoAnnouncements);
-    }
-
-    private void loadSessionData() {
-        FacultySessionManager session = new FacultySessionManager(this);
-        String fId = session.getFacultyId();
+    private void refreshUI() {
+        if (session == null) session = new SessionManager(this);
+        String id = session.getSapId();
         String name = session.getName();
-        String dept = session.getDepartment();
+        String deptName = session.getBranch();
 
-        facultyId.setText(fId != null ? fId : "N/A");
-        facultyName.setText(name != null ? name : "Faculty");
-        department.setText(dept != null ? dept : "N/A");
+        if (facultyId != null) facultyId.setText(id != null ? id : "N/A");
+        if (facultyName != null) facultyName.setText(name != null ? name : "Faculty Member");
+        if (department != null) department.setText(deptName != null ? deptName : "N/A");
 
-        // Show Faculty badge
-        if (facultyBadge != null) {
-            facultyBadge.setVisibility(View.VISIBLE);
-            facultyBadge.setText("Faculty");
-        }
-
-        if (name != null && !name.trim().isEmpty()) {
-            String[] parts = name.split(" ");
-            StringBuilder sb = new StringBuilder();
-            for (String p : parts) {
-                if (!p.isEmpty()) sb.append(p.charAt(0));
-            }
-            initials.setText(sb.toString().toUpperCase());
-        } else {
-            initials.setText("F");
+        if (initials != null) {
+            if (name != null && !name.trim().isEmpty()) {
+                String[] parts = name.trim().split(" ");
+                StringBuilder sb = new StringBuilder();
+                for (String p : parts)
+                    if (!p.isEmpty()) sb.append(p.charAt(0));
+                initials.setText(sb.toString().toUpperCase());
+            } else initials.setText("?");
         }
     }
 
     private void setupCalendar() {
-        Calendar today = Calendar.getInstance();
-        SimpleDateFormat monthYearFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
-        tvMonthYear.setText(monthYearFormat.format(today.getTime()));
+        if (tvMonthYear != null) {
+            Calendar today = Calendar.getInstance();
+            SimpleDateFormat monthYearFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
+            tvMonthYear.setText(monthYearFormat.format(today.getTime()));
+        }
 
-        List<Calendar> dates = CalendarHelper.generateCalendarDates(21);
-        calendarRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        );
-        calendarAdapter = new CalendarAdapter(dates);
-        calendarRecyclerView.setAdapter(calendarAdapter);
-        calendarRecyclerView.scrollToPosition(10);
+        if (calendarRecyclerView != null) {
+            List<Calendar> dates = CalendarHelper.generateCalendarDates(21);
+            calendarRecyclerView.setLayoutManager(
+                    new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            );
+            calendarAdapter = new CalendarAdapter(dates);
+            calendarRecyclerView.setAdapter(calendarAdapter);
+            calendarRecyclerView.scrollToPosition(10);
+        }
     }
 
     private void setupAnnouncements() {
+        if (announcementsRecyclerView == null) return;
+
         announcementsRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         );
-
         announcementAdapter = new AnnouncementAdapter(announcementList);
         announcementsRecyclerView.setAdapter(announcementAdapter);
         announcementsRecyclerView.setHasFixedSize(true);
@@ -156,105 +175,50 @@ public class FacultyHomePage extends AppCompatActivity {
         snapHelper.attachToRecyclerView(announcementsRecyclerView);
     }
 
-    private void loadFacultyAnnouncements() {
-        if (facultyIdValue == null) return;
+    private void loadAnnouncementsWithCache(String deptName, String semester) {
+        if (deptName == null || semester == null) return;
 
-        // Load cached announcements first
-        List<Announcement> cached = cacheManager.getCachedAnnouncements("faculty", facultyIdValue);
-        if (cached != null && !cached.isEmpty()) {
+        if (cacheManager.hasCachedData(deptName, semester)) {
+            List<Announcement> cached = cacheManager.getCachedAnnouncements(deptName, semester);
             announcementList.clear();
-            uniqueAnnouncementIds.clear();
-            for (Announcement a : cached) {
-                if (uniqueAnnouncementIds.add(a.getId())) {
-                    announcementList.add(a);
-                }
-            }
+            announcementList.addAll(cached);
             updateAnnouncementUI();
         }
 
-        // Load faculty's own subjects and their announcements
-        db.collection("Faculty")
-                .document(facultyIdValue)
-                .collection("Subjects")
-                .whereEqualTo("is_active", true)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    for (DocumentSnapshot doc : querySnapshot) {
-                        String branch = doc.getString("branch");
-                        String semester = doc.getString("semester");
-
-                        if (branch != null && semester != null) {
-                            setupAnnouncementListener(branch, semester);
-                        }
-                    }
-
-                    // Also load university announcements
-                    loadUniversityAnnouncements();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error loading subjects", Toast.LENGTH_SHORT).show();
-                });
+        setupAnnouncementListeners(deptName, semester);
     }
 
-    private void setupAnnouncementListener(String branch, String semester) {
-        String branchSemesterDoc = branch + " " + semester;
+    private void setupAnnouncementListeners(String deptName, String semester) {
+        String deptSemDoc = deptName + " " + semester;
 
-        ListenerRegistration listener = db.collection("Announcements")
-                .document(branchSemesterDoc)
+        if (deptListener != null) deptListener.remove();
+        if (universityListener != null) universityListener.remove();
+
+        deptListener = db.collection("Announcements")
+                .document(deptSemDoc)
                 .collection("posts")
                 .whereEqualTo("is_active", true)
                 .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener((snapshots, error) -> {
                     if (error != null) {
+                        Toast.makeText(this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (snapshots == null) return;
 
-                    for (DocumentChange change : snapshots.getDocumentChanges()) {
-                        DocumentSnapshot doc = change.getDocument();
-                        Announcement announcement = parseAnnouncementFromDynamicFields(doc);
-
-                        if (announcement == null) continue;
-
-                        switch (change.getType()) {
-                            case ADDED:
-                            case MODIFIED:
-                                if (uniqueAnnouncementIds.add(announcement.getId())) {
-                                    announcementList.add(0, announcement);
-                                } else {
-                                    // Update existing announcement
-                                    for (int i = 0; i < announcementList.size(); i++) {
-                                        if (announcementList.get(i).getId().equals(announcement.getId())) {
-                                            announcementList.set(i, announcement);
-                                            break;
-                                        }
-                                    }
-                                }
-                                break;
-                            case REMOVED:
-                                announcementList.removeIf(a -> a.getId().equals(announcement.getId()));
-                                uniqueAnnouncementIds.remove(announcement.getId());
-                                break;
-                        }
+                    announcementList.clear();
+                    for (DocumentSnapshot doc : snapshots) {
+                        Announcement announcement = parseAnnouncement(doc);
+                        if (announcement != null) announcementList.add(announcement);
                     }
 
-                    // Sort by date
-                    announcementList.sort((a, b) -> {
-                        if (a.getDate() == null) return 1;
-                        if (b.getDate() == null) return -1;
-                        return b.getDate().compareTo(a.getDate());
-                    });
-
-                    cacheManager.saveAnnouncements(announcementList, "faculty", facultyIdValue);
-                    updateAnnouncementUI();
+                    loadUniversityAnnouncementsRealtime(deptName, semester);
                 });
-
-        announcementListeners.add(listener);
     }
 
-    private void loadUniversityAnnouncements() {
-        ListenerRegistration listener = db.collection("Announcements")
+    private void loadUniversityAnnouncementsRealtime(String deptName, String semester) {
+        universityListener = db.collection("Announcements")
                 .document("University")
                 .collection("posts")
                 .whereEqualTo("is_active", true)
@@ -262,51 +226,19 @@ public class FacultyHomePage extends AppCompatActivity {
                 .addSnapshotListener((snapshots, error) -> {
                     if (error != null) return;
 
-                    if (snapshots == null) return;
-
-                    for (DocumentChange change : snapshots.getDocumentChanges()) {
-                        DocumentSnapshot doc = change.getDocument();
-                        Announcement announcement = parseAnnouncementFromDynamicFields(doc);
-
-                        if (announcement == null) continue;
-
-                        switch (change.getType()) {
-                            case ADDED:
-                            case MODIFIED:
-                                if (uniqueAnnouncementIds.add(announcement.getId())) {
-                                    announcementList.add(0, announcement);
-                                } else {
-                                    // Update existing announcement
-                                    for (int i = 0; i < announcementList.size(); i++) {
-                                        if (announcementList.get(i).getId().equals(announcement.getId())) {
-                                            announcementList.set(i, announcement);
-                                            break;
-                                        }
-                                    }
-                                }
-                                break;
-                            case REMOVED:
-                                announcementList.removeIf(a -> a.getId().equals(announcement.getId()));
-                                uniqueAnnouncementIds.remove(announcement.getId());
-                                break;
+                    if (snapshots != null) {
+                        for (DocumentSnapshot doc : snapshots) {
+                            Announcement announcement = parseAnnouncement(doc);
+                            if (announcement != null) announcementList.add(announcement);
                         }
                     }
 
-                    // Sort by date
-                    announcementList.sort((a, b) -> {
-                        if (a.getDate() == null) return 1;
-                        if (b.getDate() == null) return -1;
-                        return b.getDate().compareTo(a.getDate());
-                    });
-
-                    cacheManager.saveAnnouncements(announcementList, "faculty", facultyIdValue);
+                    cacheManager.saveAnnouncements(announcementList, deptName, semester);
                     updateAnnouncementUI();
                 });
-
-        announcementListeners.add(listener);
     }
 
-    private Announcement parseAnnouncementFromDynamicFields(DocumentSnapshot doc) {
+    private Announcement parseAnnouncement(DocumentSnapshot doc) {
         Map<String, Object> data = doc.getData();
         if (data == null || data.isEmpty()) return null;
 
@@ -326,7 +258,6 @@ public class FacultyHomePage extends AppCompatActivity {
             a.setIs_active(isActive != null ? isActive : false);
         }
 
-        // Check if announcement has expired
         Timestamp expiresAt = a.getExpires_at();
         if (expiresAt != null && expiresAt.toDate().before(new java.util.Date())) {
             return null;
@@ -337,6 +268,8 @@ public class FacultyHomePage extends AppCompatActivity {
 
     private void updateAnnouncementUI() {
         runOnUiThread(() -> {
+            if (tvNoAnnouncements == null || announcementsRecyclerView == null || announcementAdapter == null) return;
+
             if (announcementList.isEmpty()) {
                 tvNoAnnouncements.setVisibility(View.VISIBLE);
                 announcementsRecyclerView.setVisibility(View.GONE);
@@ -350,24 +283,17 @@ public class FacultyHomePage extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        for (ListenerRegistration listener : announcementListeners) {
-            if (listener != null) listener.remove();
-        }
-        announcementListeners.clear();
+    protected void onResume() {
+        super.onResume();
+        refreshUI();
+        loadAnnouncementsWithCache(session.getBranch(), session.getSemester());
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        // Refresh announcements when coming back from FacultyAddAnnouncementActivity
-        announcementList.clear();
-        uniqueAnnouncementIds.clear();
-        for (ListenerRegistration listener : announcementListeners) {
-            if (listener != null) listener.remove();
-        }
-        announcementListeners.clear();
-        loadFacultyAnnouncements();
+    protected void onDestroy() {
+        super.onDestroy();
+        if (prefs != null) prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
+        if (deptListener != null) deptListener.remove();
+        if (universityListener != null) universityListener.remove();
     }
 }

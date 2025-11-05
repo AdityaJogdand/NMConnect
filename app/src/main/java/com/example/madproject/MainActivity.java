@@ -18,10 +18,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        // Session check - BEFORE setContentView
+        // Check Session before showing UI
         SessionManager session = new SessionManager(this);
+
         if (session.isLoggedIn()) {
-            // Get all session data
             String role = session.getRole();
             String sapId = session.getSapId();
             String name = session.getName();
@@ -32,40 +32,47 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d(TAG, "User already logged in - Role: " + role);
 
-            Intent i;
-            // Check role and redirect accordingly
-            if ("CR".equalsIgnoreCase(role)) {
+            Intent intent;
+
+            // ✅ FIX: Added faculty redirection
+            if ("Faculty".equalsIgnoreCase(role) || "Teacher".equalsIgnoreCase(role)) {
+                Log.d(TAG, "Redirecting to FacultyHomePage");
+                intent = new Intent(this, FacultyHomePage.class);
+            } else if ("CR".equalsIgnoreCase(role)) {
                 Log.d(TAG, "Redirecting to CrHomePage");
-                i = new Intent(this, CrHomePage.class);
+                intent = new Intent(this, CrHomePage.class);
             } else {
                 Log.d(TAG, "Redirecting to StudentHomePage");
-                i = new Intent(this, StudentHomePage.class);
+                intent = new Intent(this, StudentHomePage.class);
             }
 
-            // Pass all user data
-            i.putExtra("sapId", sapId);
-            i.putExtra("role", role);
-            i.putExtra("name", name);
-            i.putExtra("rollNo", rollNo);
-            i.putExtra("branch", branch);
-            i.putExtra("semester", semester);
-            i.putExtra("email", email);
+            // Pass session data
+            intent.putExtra("sapId", sapId);
+            intent.putExtra("role", role);
+            intent.putExtra("name", name);
+            intent.putExtra("rollNo", rollNo);
+            intent.putExtra("branch", branch);
+            intent.putExtra("semester", semester);
+            intent.putExtra("email", email);
 
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
+            // Clear back stack and start fresh
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             finish();
             return;
         }
 
-        // User not logged in, show main screen
+        // Not logged in → show main page
         setContentView(R.layout.activity_main);
 
         Button btn = findViewById(R.id.getstartedbtn);
-        TextView lg = findViewById(R.id.login);
+
 
         btn.setOnClickListener(v -> {
             Intent i = new Intent(MainActivity.this, login.class);
             startActivity(i);
         });
+
+
     }
 }

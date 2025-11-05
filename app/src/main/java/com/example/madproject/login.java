@@ -70,8 +70,6 @@ public class login extends AppCompatActivity {
         String hashedPassword = hashPassword(password);
 
         // Determine collection based on selected role
-        // Teacher -> Faculty collection
-        // Student/CR -> Student collection
         String collectionName = selectedRole.equals("Teacher") ? "Faculty" : "Student";
 
         Log.d(TAG, "Checking collection: " + collectionName);
@@ -86,19 +84,35 @@ public class login extends AppCompatActivity {
                         String storedPassword = doc.getString("password");
                         Boolean firstLogin = doc.getBoolean("first_login");
 
-                        // Get all user data from Firestore
+                        // Get user data common fields
                         String name = doc.getString("Name");
-                        String rollNo = doc.getString("Roll No");
-                        String branch = doc.getString("Branch");
-                        String semester = doc.getString("Semester");
                         String email = doc.getString("email");
                         String userRole = doc.getString("role"); // Get actual role from database
+
+                        // Fields that differ between Student and Faculty
+                        String rollNo;
+                        String branchOrDepartment;
+                        String semester;
+
+                        // === FIX: CONDITIONAL DATA RETRIEVAL ===
+                        if (collectionName.equals("Faculty")) {
+                            // Retrieve department for Faculty
+                            branchOrDepartment = doc.getString("department");
+                            rollNo = null; // Roll No is typically not applicable or unused for Faculty
+                            semester = null; // Semester is typically not applicable for Faculty
+                        } else {
+                            // Retrieve Branch, Roll No, and Semester for Student/CR
+                            rollNo = doc.getString("Roll No");
+                            branchOrDepartment = doc.getString("Branch");
+                            semester = doc.getString("Semester");
+                        }
+                        // ======================================
 
                         // Log all fetched data
                         Log.d(TAG, "Document found for SAP ID: " + sapId);
                         Log.d(TAG, "Name: " + name);
                         Log.d(TAG, "Roll No: " + rollNo);
-                        Log.d(TAG, "Branch: " + branch);
+                        Log.d(TAG, "Branch/Department: " + branchOrDepartment); // Log corrected variable
                         Log.d(TAG, "Semester: " + semester);
                         Log.d(TAG, "Email: " + email);
                         Log.d(TAG, "User Role from DB: " + userRole);
@@ -142,7 +156,9 @@ public class login extends AppCompatActivity {
                                 // Save complete user session
                                 SessionManager session = new SessionManager(this);
                                 String sessionRole = collectionName.equals("Faculty") ? "Faculty" : (userRole != null ? userRole : "Student");
-                                session.createLoginSession(sapId, sessionRole, rollNo, branch, name, email, semester);
+
+                                // Pass the corrected branch/department variable to the session
+                                session.createLoginSession(sapId, sessionRole, rollNo, branchOrDepartment, name, email, semester);
 
                                 // Redirect based on collection and role
                                 Intent intent;
@@ -166,7 +182,7 @@ public class login extends AppCompatActivity {
                                     intent.putExtra("role", sessionRole);
                                     intent.putExtra("name", name);
                                     intent.putExtra("rollNo", rollNo);
-                                    intent.putExtra("branch", branch);
+                                    intent.putExtra("branch", branchOrDepartment); // Use corrected variable
                                     intent.putExtra("semester", semester);
                                     intent.putExtra("email", email);
 

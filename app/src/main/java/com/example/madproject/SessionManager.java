@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SessionManager {
+
     private static final String PREF_NAME = "app_session";
     private static final String KEY_LOGGED_IN = "is_logged_in";
     private static final String KEY_SAPID = "sap_id";
@@ -22,8 +23,12 @@ public class SessionManager {
         editor = prefs.edit();
     }
 
-    // Create login session with all user data
-    public void createLoginSession(String sapId, String role, String rollNo, String branch, String name, String email, String semester) {
+    /**
+     * Creates a new login session for any user type.
+     * The same method is used for Student, CR, and Faculty users.
+     */
+    public void createLoginSession(String sapId, String role, String rollNo,
+                                   String branch, String name, String email, String semester) {
         editor.putBoolean(KEY_LOGGED_IN, true);
         editor.putString(KEY_SAPID, sapId);
         editor.putString(KEY_ROLE, role);
@@ -35,7 +40,31 @@ public class SessionManager {
         editor.apply();
     }
 
-    // Getters
+    // -------------------------------
+    // ✅ Session Update Methods
+    // -------------------------------
+
+    public void updateField(String key, String value) {
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public void updateName(String newName) {
+        updateField(KEY_NAME, newName);
+    }
+
+    public void updateBranch(String newBranch) {
+        updateField(KEY_BRANCH, newBranch);
+    }
+
+    public void updateEmail(String newEmail) {
+        updateField(KEY_EMAIL, newEmail);
+    }
+
+    // -------------------------------
+    // ✅ Getters
+    // -------------------------------
+
     public boolean isLoggedIn() {
         return prefs.getBoolean(KEY_LOGGED_IN, false);
     }
@@ -68,7 +97,32 @@ public class SessionManager {
         return prefs.getString(KEY_SEMESTER, null);
     }
 
-    // Clear session data
+    // -------------------------------
+    // ✅ Helpers
+    // -------------------------------
+
+    /**
+     * Returns a normalized user type.
+     * Possible values: "Faculty", "CR", "Student", or "Unknown"
+     */
+    public String getUserType() {
+        String role = getRole();
+        if (role == null) return "Unknown";
+
+        if (role.equalsIgnoreCase("faculty") || role.equalsIgnoreCase("teacher"))
+            return "Faculty";
+        if (role.equalsIgnoreCase("cr"))
+            return "CR";
+        if (role.equalsIgnoreCase("student"))
+            return "Student";
+
+        return "Unknown";
+    }
+
+    // -------------------------------
+    // ✅ Logout / Clear Session
+    // -------------------------------
+
     public void clearSession() {
         editor.clear();
         editor.apply();

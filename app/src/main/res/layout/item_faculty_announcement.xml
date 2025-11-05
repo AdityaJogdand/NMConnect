@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    android:backgroundTint="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header: Title and Delete Button -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tvAnnouncementTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/ivDelete"
+                android:text="Announcement Title"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#000000"
+                android:maxLines="2"
+                android:ellipsize="end"/>
+
+            <ImageView
+                android:id="@+id/ivDelete"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@android:drawable/ic_menu_delete"
+                android:tint="#FF0000"
+                android:padding="2dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Delete announcement"/>
+        </RelativeLayout>
+
+        <!-- Message -->
+        <TextView
+            android:id="@+id/tvAnnouncementMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This is the announcement message content..."
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="#4F4E4E"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Department and Semester -->
+        <TextView
+            android:id="@+id/tvDeptSem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Computer Engineering - Sem 5"
+            android:textSize="13sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="#808080"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Date -->
+        <TextView
+            android:id="@+id/tvAnnouncementDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="25 Oct 2025"
+            android:textSize="12sp"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="#808080"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Priority and Status Chips -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Normal"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_semibold"
+                app:chipBackgroundColor="#FF0000"
+                app:chipMinHeight="28dp"
+                android:layout_marginEnd="8dp"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Active"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_semibold"
+                app:chipBackgroundColor="#808080"
+                app:chipMinHeight="28dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
